@@ -1,29 +1,11 @@
-# pinia_guides
+# Pinia
 
-This template should help get you started developing with Vue 3 in Vite.
+Pinia permite almacenar estados globales en stores.
 
-## Recommended IDE Setup
+Cualquier componente de la aplicacion podra manipular los estados almacenados en el store global.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Cada vez que cambie un estado en el store, cada componente obtendra el valor actualizado de dicho estado.
 
-## Customize configuration
+## Actions
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+Las acciones son funciones que se definen dentro del store y pueden modificar estados cuando son llamadas desde los componentes.
