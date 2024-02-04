@@ -7,7 +7,9 @@ const taskStore = useTaskStore()
 const task = ref('')
 
 const addTask = () => {
+    if (task.value === '') return
     taskStore.addTasks(task.value)
+    task.value = ''
 }
 
 </script>

@@ -1,4 +1,6 @@
 <script setup>
+import { useTaskStore } from '@/stores/taskStore'
+
 const props = defineProps({
     title: {
         type: String,
@@ -7,8 +9,22 @@ const props = defineProps({
     isFav: {
         type: Boolean,
         default: false
+    },
+    id: {
+        type: Number,
+        default: 0
     }
 })
+
+const taskStore = useTaskStore()
+
+const deleteTask = (id) => {
+    taskStore.deleteTask(id)
+}
+
+const favouriteTask = (id) => {
+    taskStore.favouriteTask(id)
+}
 </script>
 
 <template>
@@ -17,18 +33,16 @@ const props = defineProps({
             {{ props.title }}
         </article>
         <article class="flex gap-3">
-            <span class="material-icons stateButtons">
+            <span 
+                @click="favouriteTask(props.id)"
+                :class="[props.isFav ? 'text-red-500' : 'text-gray-400', 'material-icons stateButtons cursor-pointer select-none']">
                 favorite
             </span>
-            <span class="material-icons stateButtons">
+            <span 
+                @click="deleteTask(props.id)"
+                class="material-icons text-gray-400 cursor-pointer select-none">
                 delete
             </span>
         </article>
     </section>
 </template>
-
-<style scoped>
-.stateButtons {
-    @apply cursor-pointer text-gray-400;
-}
-</style>
