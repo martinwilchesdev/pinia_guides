@@ -1,13 +1,28 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import TaskCard from '@/components/TaskCard.vue'
 import { useTaskStore } from '@/stores/taskStore'
 
 const taskStore = useTaskStore()
 
-const favTasks = computed(() => {
-    const totalFavTasks = taskStore.tasks.filter(task => task.isFav)
-    return totalFavTasks.length
+const favouriteTasks = ref([])
+const favTasks = ref(false)
+
+const totalFavTasks = computed(() => {
+    return taskStore.tasks.filter(task => task.isFav).length
+})
+
+const showFavTasks = () => {
+    favTasks.value = true
+    favouriteTasks.value = taskStore.tasks.filter(task => task.isFav)
+}
+
+const showAllTasks = () => {
+    favTasks.value = false
+}
+
+const showTasks = computed(() => {
+    return favTasks.value ? favouriteTasks.value : taskStore.tasks
 })
 </script>
 
@@ -16,11 +31,16 @@ const favTasks = computed(() => {
         <article class="flex items-center justify-between mb-8">
             <p class="text-lg">You have {{ taskStore.tasks.length }} tasks left to do</p>
             <section class="flex gap-3">
-                <button class="cursor-pointer rounded-full border border-2 py-2 px-4">All tasks</button>
-                <button class="cursor-pointer rounded-full border border-2 py-2 px-4">Fav tasks({{ favTasks }})</button>
+                <button 
+                    @click="showAllTasks"
+                    :class="[!favTasks ? 'bg-yellow-300' : '', 'button']">All tasks</button>
+                <button 
+                    @click="showFavTasks"
+                    :class="[favTasks ? 'bg-yellow-300' : '', 'button']">
+                    Fav tasks ({{ totalFavTasks }})</button>
             </section>
         </article>
-        <article v-for="(task, index) in taskStore.tasks" :key="index">
+        <article v-for="(task, index) in showTasks" :key="index">
             <TaskCard 
                 :title="task.title"
                 :isFav="task.isFav"
@@ -29,3 +49,9 @@ const favTasks = computed(() => {
         </article>
     </section>
 </template>
+
+<style scoped>
+.button {
+    @apply cursor-pointer rounded-full border border-2 py-2 px-4 select-none transition-all;
+}
+</style>
